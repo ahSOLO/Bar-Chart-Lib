@@ -73,8 +73,6 @@ body {
   #axis-labels {
     display: inline-block;
     height: 100%;
-    padding: 0;
-    margin: 0;
   }
 
     #axis-labels li {
@@ -95,15 +93,12 @@ body {
 
   #bars {
     display: inline-block;
-    padding: 0;
-    margin: 0;
     background-color: #101010;
   }
 
     #bars li {
       display: table-cell;
       height: 300px;
-      margin: 0;
       text-align: center;
       position: relative;
     }
@@ -119,9 +114,19 @@ body {
 
     .bar-value {
       text-align: center;
-      position: relative;
-      top: 5px;
+      left: 0;
+      right: 0;
     }
+
+      .value-top {
+        position: relative;
+        top: 5px;
+      }
+
+      .value-bottom {
+        position: absolute;
+        bottom: 5px;
+      }
 
     .bar-title {
       width: 100%;

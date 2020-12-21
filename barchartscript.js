@@ -1,5 +1,5 @@
 // Input Test Variable
-drawBarChart({First: 50, Second: 30, Third: 40}, {valuePosition: "top"}, $("body"));
+drawBarChart({First: 50, Second: 30, Third: 40}, {valuePosition: "middle"}, $("body"));
 
 function drawBarChart(data, options, element){
 
@@ -8,8 +8,14 @@ function drawBarChart(data, options, element){
   let length = Object.keys(data).length;
   let total = values.reduce((a, b) => a + b, 0);
 
+  // Default Options
+  let defaultWidth = 1000;
+  if (options.defaultWidth) defaultWidth = options.defaultWidth;
+  let valuePosition = "top";
+  if (options.valuePosition) valuePosition = options.valuePosition;
+
   // Width + Height Variables
-  let chartWidth = Math.max(300, Math.min($(window).width()-100, 1000));
+  let chartWidth = defaultWidth;
   let axisLabelWidth = 25;
   let barWidth = chartWidth-axisLabelWidth;
   let barHeight = 300;
@@ -18,13 +24,16 @@ function drawBarChart(data, options, element){
   createChart();
   createBars();
   setWidth();
+  if (options.valuePosition) setValuePos(options.valuePosition);
 
   // Adjust width and margins of bars on window resize
-  $(window).resize(function() {
-    chartWidth = Math.max(300, Math.min($(window).width()-100, 1000));
-    barWidth = chartWidth-axisLabelWidth;
-    setWidth();
-  });
+  if (!options.chartWidth) {
+    $(window).resize(function() {
+      chartWidth = Math.max(300, Math.min($(window).width()-100, defaultWidth)); // Clamp the value of chartwidth to between 300 and window width - 100
+      barWidth = chartWidth-axisLabelWidth;
+      setWidth();
+    });
+  }
 
   // Lay down HTML for chart axes and title
   function createChart(){
@@ -41,6 +50,18 @@ function drawBarChart(data, options, element){
       ;
       index++;
     });
+  }
+
+  // Set value position depending on chosen option: top, middle, or bottom
+  function setValuePos(position){
+    if (position === "top") $(".bar-value").addClass("value-top");
+    else if (position === "middle") {
+      $(".bar-value").each(function() {
+        height = $(this).parent().height();
+        $(this).addClass("value-bottom").css("bottom", (height/2)-5+"px");
+      });
+    }
+    else if (position === "bottom") $(".bar-value").addClass("value-bottom");
   }
 
   // Set width and margins of chart and bars
