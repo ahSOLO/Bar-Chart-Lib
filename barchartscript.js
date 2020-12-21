@@ -1,5 +1,5 @@
 // Input Test Variable
-drawBarChart({First: 50, Second: 30, Third: 40}, {valuePosition: "middle"}, $("body"));
+drawBarChart({First: 50, Second: 30, Third: 40}, {valuePosition: "top", barColors: ["#000000", "#110101", "#008080"]}, $("body"));
 
 function drawBarChart(data, options, element){
 
@@ -25,6 +25,7 @@ function drawBarChart(data, options, element){
   createBars();
   setWidth();
   if (options.valuePosition) setValuePos(options.valuePosition);
+  if (options.barColors) setBarColours(options.barColors);
 
   // Adjust width and margins of bars on window resize
   if (!options.chartWidth) {
@@ -44,10 +45,8 @@ function drawBarChart(data, options, element){
   function createBars(){
     let index = 0;
     $.each(data,function(property, value){
-      $("#bars").append('<li><div class="bar"><span class=bar-value>'+value+'</span></div><span class=bar-title>'+property+'</span></li>')
-      $(".bar").eq(index)
-      .height(barHeight * value/total)
-      ;
+      $("#bars").append('<li><div class="bar"><span class=bar-value>'+value+'</span></div><span class=bar-title>'+property+'</span></li>');
+      $(".bar").eq(index).height(barHeight * value/total);
       index++;
     });
   }
@@ -62,6 +61,13 @@ function drawBarChart(data, options, element){
       });
     }
     else if (position === "bottom") $(".bar-value").addClass("value-bottom");
+  }
+
+  function setBarColours(color){
+    if (typeof color === "string") $(".bar").css("background-color", color)
+    else if (Array.isArray(color)) $.each(color, function(index) {
+      $(".bar").eq(index).css("background-color", color[index]);
+    });
   }
 
   // Set width and margins of chart and bars
