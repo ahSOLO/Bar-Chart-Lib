@@ -1,10 +1,10 @@
 // Pre-made palettes
-let pal1 = ["#845EC2", "#D65DB1", "#FF6F91", "#FF9671", "#FFC75F", "#F9F871", "#9BDE7E", "#4BBC8E", "#039590", "#1C6E7D"]
-let pal2 = ["#4499EE", "#00B9F9", "#00D3E4", "#00E7BA", "#99F48C", "#CDEC7A", "#F6E278", "#FFD885", "#C7C768", "#8BB558"]
-let pal3 = ["#AA3B46", "#AF417F", "#8C5DB9", "#007DE0", "#0096E2", "#00A7BF", "#4A83C7", "#786AB5", "#974F94", "#A33467"]
+let pal1 = ["#845EC2", "#D65DB1", "#FF6F91", "#FF9671", "#FFC75F", "#F9F871", "#9BDE7E", "#4BBC8E", "#039590", "#1C6E7D", "#5375A5", "#7F73AB"]
+let pal2 = ["#4499EE", "#00B9F9", "#00D3E4", "#00E7BA", "#99F48C", "#CDEC7A", "#F6E278", "#FFD885", "#C7C768", "#8BB558", "#5AAA64", "#179C72"]
+let pal3 = ["#AA3B46", "#AF417F", "#8C5DB9", "#007DE0", "#0096E2", "#00A7BF", "#4A83C7", "#786AB5", "#974F94", "#A33467", "#C07D96", "#BDA5AD"]
 
 // Demo
-drawBarChart({"React": 71.7, "Vue.js": 40.5, "Angular": 21.9, "Preact": 9.5, "Svelite": 6.8, "Ember": 3.6},
+drawBarChart({"React": [71.7, 20, 40], "Vue.js": 40.5, "Angular": 21.9, "Preact": 9.5, "Svelite": 6.8, "Ember": 3.6},
   {defaultWidth: 1000, valuePosition: "top", barColors: pal1, labelColor: "#FFFFFF",
    barWidth: "60%", yAxis: "% of Current Developers", title:"Most Popular Front-End Frameworks"},
   $("body"));
@@ -14,9 +14,17 @@ function drawBarChart(data, options, element){ // TO DO: Make options an optiona
 
   // General Variables
   let values = Object.values(data);
-  let maxValue = Math.max(...values);
   let length = Object.keys(data).length; // To Do: make this compatible with tiered bar charts
   // let total = values.reduce((a, b) => a + b, 0);
+
+  // Determine Max Value
+  let maxValue = 0;
+  let _total = 0;
+  for (i = 0; i < values.length; i++){
+    if (Array.isArray(values[i])) _total = values[i].reduce((a,b) => a + b, 0);
+    else _total = values[i];
+    if (_total > maxValue) maxValue = _total;
+  }
 
   // Tick values
   let axis1 = (maxValue * 1.1).toFixed(0); // To Do: Make these values snap to multiples of 2, 5, 10, etc.
@@ -89,10 +97,26 @@ function drawBarChart(data, options, element){ // TO DO: Make options an optiona
   // Create bars and assign height based on % of total data value
   function createBars(){
     let index = 0;
+    let previousHeight = 0;
     $.each(data,function(property, value){
-      $("#bar-chart-lib #bars").append('<li><div class="bar"><span class=bar-value>'+value+'</span></div><span class=bar-title>'+property+'</span></li>')
+      if (Array.isArray(value)) {
+        $("#bar-chart-lib #bars").append('<li><div class="bar"><span class=bar-value>'+value[0]+'</span></div><span class=bar-title>'+property+'</span></li>')
         .children("li").height(chartHeight);
-      $("#bar-chart-lib .bar").eq(index).height((value / maxValue) * chartHeight / 1.1 );
+        $("#bar-chart-lib .bar").eq(index).height((value[0] / maxValue) * chartHeight / 1.1 );
+        previousHeight = 0
+        for (i = 1; i < value.length; i++){
+          $("#bar-chart-lib .bar").eq(index).css({"border-radius": "0px", "-webkit-border-radius": "0px", "-moz-border-radius": "0px"})
+          previousHeight += (value[i-1] / maxValue) * chartHeight / 1.1;
+          $("#bar-chart-lib #bars li").append('<div class="bar"><span class=bar-value>'+value[i]+'</span></div>').height(chartHeight);
+          index++
+          $("#bar-chart-lib .bar").eq(index).height((value[i] / maxValue) * chartHeight / 1.1 ).css("bottom", previousHeight);
+        }
+      }
+      else {
+        $("#bar-chart-lib #bars").append('<li><div class="bar"><span class=bar-value>'+value+'</span></div><span class=bar-title>'+property+'</span></li>')
+          .children("li").height(chartHeight);
+        $("#bar-chart-lib .bar").eq(index).height((value / maxValue) * chartHeight / 1.1 );
+      }
       index++;
     });
   }
