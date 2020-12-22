@@ -1,6 +1,7 @@
 // Input Test Variable
 drawBarChart({First: 50, Second: 30, Third: 20},
-  {defaultWidth: 1000, valuePosition: "top", barColors: ["#FF5733", "#FF9333", "#008080"], labelColor: "#FFFFFF", barWidth: "60%", xAxis: "X Axis", yAxis: "Y Axis"},
+  {defaultWidth: 1000, valuePosition: "top", barColors: ["#FF5733", "#FF9333", "#008080"], labelColor: "#FFFFFF",
+   barWidth: "60%", xAxis: "X Axis", yAxis: "Y Axis", title:"Bar Chart"},
   $("body"));
 
 // Main bar chart creation function
@@ -11,17 +12,29 @@ function drawBarChart(data, options, element){ // TO DO: Make options an optiona
   let maxValue = Math.max(...values);
   let length = Object.keys(data).length; // To Do: make this compatible with tiered bar charts
   // let total = values.reduce((a, b) => a + b, 0);
+
+  // Tick values
   let axis1 = (maxValue * 1.1).toFixed(0); // To Do: Make these values snap to multiples of 2, 5, 10, etc.
   let axis2 = ((maxValue * 1.1)*4/5).toFixed(0);
   let axis3 = ((maxValue * 1.1)*3/5).toFixed(0);
   let axis4 = ((maxValue * 1.1)*2/5).toFixed(0);
   let axis5 = ((maxValue * 1.1)*1/5).toFixed(0);
+
+  // Label Titles
   let yAxisLabel = "";
   if (options.yAxis) yAxisLabel=options.yAxis;
   let xAxisLabel = "";
   if (options.xAxis) xAxisLabel=options.xAxis;
+
+  // Chart Title
   let chartTitle = "";
   if (options.title) chartTitle = options.title;
+  let titleFont = "Arial";
+  if (options.titleFont) titleFont = options.titleFont;
+  let titleFontSize = "20px";
+  if (options.titleFontSize) titleFontSize = options.titleFontSize;
+  let titleColor = "#FFFFFF";
+  if (options.titleColor) titleColor = options.titleColor;
 
   // Value Position variable
   let valuePosition = "top";
@@ -43,19 +56,21 @@ function drawBarChart(data, options, element){ // TO DO: Make options an optiona
   createBars();
   setWidth();
   setBarSpacing(barWidth);
+  setTitle(chartTitle, titleFont, titleFontSize, titleColor)
 
   // Optional Features
   if (options.autoWidth !== "off") autoWidth();
   if (options.valuePosition) setValuePos(options.valuePosition);
   if (options.barColors) setBarColors(options.barColors);
   if (options.labelColor) setLabelColor(options.labelColor);
+  if (options.backgroundColor) setBackgroundColor(options.backgroundColor);
 
   // FUNCTION DEFINITIONS BELOW
 
   // Lay down HTML for chart axes and title
   function createChart(){
-    element.prepend('<div id="bar-chart-lib"><div id="chart-title"><p>Bar Chart Title</p></div><div id="chart"><ul id="axis-ticks"><span id="y-axis-label">'
-      +yAxisLabel+'</span><li><span>'
+    element.prepend('<div id="bar-chart-lib"><div id="chart-title"><p>Bar Chart Title</p></div><div id="chart"><span id="y-axis-label">'
+      +yAxisLabel+'</span><ul id="axis-ticks"><li><span>'
       +axis1+'</span></li><li><span>'
       +axis2+'</span></li><li><span>'
       +axis3+'</span></li><li><span>'
@@ -63,6 +78,7 @@ function drawBarChart(data, options, element){ // TO DO: Make options an optiona
       +axis5+'</span></li></ul><ul id="bars"></ul><span id="x-axis-label">'
       +xAxisLabel+'</span></div></div>');
     $('#bar-chart-lib #axis-ticks li').height(chartHeight/5 - 1);
+    $('#bar-chart-lib #y-axis-label').css("top", chartHeight/2+"px");
   }
 
   // Create bars and assign height based on % of total data value
@@ -92,6 +108,7 @@ function drawBarChart(data, options, element){ // TO DO: Make options an optiona
   function setWidth(){
     $("#bar-chart-lib #chart").width(chartWidth);
     $("#bar-chart-lib #axis-ticks").width(axisTicksWidth);
+    $("#bar-chart-lib #axis-ticks li").css("padding-right", BarsTotalWidth);
     $("#bar-chart-lib #bars").width(BarsTotalWidth);
     $("#bar-chart-lib #bars li").width(BarsTotalWidth / length);
     $("#bar-chart-lib #x-axis-label").width(BarsTotalWidth);
@@ -125,7 +142,11 @@ function drawBarChart(data, options, element){ // TO DO: Make options an optiona
     $("#bar-chart-lib span").css("color", color);
   }
 
-  function setTitle(title, size="20px", color="#FFFFFF"){
-    $()
+  function setTitle(title, font, size, color){
+    $("#bar-chart-lib #chart-title").text(title).css({"font-family":font, "font-size":size, "font-color":color});
+  }
+
+  function setBackgroundColor(color){
+    $('#bar-chart-lib #bars').css("background-color", color);
   }
 }
