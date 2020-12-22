@@ -4,7 +4,7 @@ let pal2 = ["#4499EE", "#00B9F9", "#00D3E4", "#00E7BA", "#99F48C", "#CDEC7A", "#
 let pal3 = ["#AA3B46", "#AF417F", "#8C5DB9", "#007DE0", "#0096E2", "#00A7BF", "#4A83C7", "#786AB5", "#974F94", "#A33467", "#C07D96", "#BDA5AD"]
 
 // Demo
-drawBarChart({"React": [71.7, 20, 40], "Vue.js": 40.5, "Angular": 21.9, "Preact": 9.5, "Svelite": 6.8, "Ember": 3.6},
+drawBarChart({"React": {first: 71.7, second: 50}, "Vue.js": 40.5, "Angular": 21.9, "Preact": 9.5, "Svelite": 6.8, "Ember": 3.6},
   {defaultWidth: 1000, valuePosition: "top", barColors: pal1, labelColor: "#FFFFFF",
    barWidth: "60%", yAxis: "% of Current Developers", title:"Most Popular Front-End Frameworks"},
   $("body"));
@@ -21,8 +21,11 @@ function drawBarChart(data, options, element){ // TO DO: Make options an optiona
   let maxValue = 0;
   let _total = 0;
   for (i = 0; i < values.length; i++){
-    if (Array.isArray(values[i])) _total = values[i].reduce((a,b) => a + b, 0);
+    // If passing through an object for a stacked bar chart, sum of the total of all the values within the object
+    if (typeof values[i] === 'object' && values[i] !== null) _total = Object.values(values[i]).reduce((a,b) => a + b, 0);
+    // Otherwise take the single value
     else _total = values[i];
+    // assign maxValue to the highest value
     if (_total > maxValue) maxValue = _total;
   }
 
@@ -99,17 +102,17 @@ function drawBarChart(data, options, element){ // TO DO: Make options an optiona
     let index = 0;
     let previousHeight = 0;
     $.each(data,function(property, value){
-      if (Array.isArray(value)) {
-        $("#bar-chart-lib #bars").append('<li><div class="bar"><span class=bar-value>'+value[0]+'</span></div><span class=bar-title>'+property+'</span></li>')
+      if (typeof value === "object" && value !== null) {
+        $("#bar-chart-lib #bars").append('<li><div class="bar"><span class=bar-value>'+Object.keys(value)[0] + ": " + Object.values(value)[0] +'</span></div><span class=bar-title>'+property+'</span></li>')
         .children("li").height(chartHeight);
-        $("#bar-chart-lib .bar").eq(index).height((value[0] / maxValue) * chartHeight / 1.1 );
+        $("#bar-chart-lib .bar").eq(index).height((Object.values(value)[0] / maxValue) * chartHeight / 1.1 );
         previousHeight = 0
-        for (i = 1; i < value.length; i++){
+        for (i = 1; i < Object.values(value).length; i++){
           $("#bar-chart-lib .bar").eq(index).css({"border-radius": "0px", "-webkit-border-radius": "0px", "-moz-border-radius": "0px"})
-          previousHeight += (value[i-1] / maxValue) * chartHeight / 1.1;
-          $("#bar-chart-lib #bars li").append('<div class="bar"><span class=bar-value>'+value[i]+'</span></div>').height(chartHeight);
+          previousHeight += (Object.values(value)[i-1] / maxValue) * chartHeight / 1.1;
+          $("#bar-chart-lib #bars li").append('<div class="bar"><span class=bar-value>'+Object.keys(value)[i] + ": " + Object.values(value)[i] +'</span></div>').height(chartHeight);
           index++
-          $("#bar-chart-lib .bar").eq(index).height((value[i] / maxValue) * chartHeight / 1.1 ).css("bottom", previousHeight);
+          $("#bar-chart-lib .bar").eq(index).height((Object.values(value)[i]/ maxValue) * chartHeight / 1.1 ).css("bottom", previousHeight);
         }
       }
       else {
