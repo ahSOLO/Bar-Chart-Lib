@@ -97,6 +97,11 @@ body {
       right: 0;
     }
 
+      #bar-chart-lib .value-above {
+        position: relative;
+        top: -18px;
+      }
+
       #bar-chart-lib .value-top {
         position: relative;
         top: 5px;

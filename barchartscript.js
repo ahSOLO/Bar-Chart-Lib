@@ -1,7 +1,12 @@
-// Input Test Variable
-drawBarChart({First: 50, Second: 30, Third: 20},
-  {defaultWidth: 1000, valuePosition: "top", barColors: ["#FF5733", "#FF9333", "#008080"], labelColor: "#FFFFFF",
-   barWidth: "60%", xAxis: "X Axis", yAxis: "Y Axis", title:"Bar Chart"},
+// Pre-made palettes
+let pal1 = ["#845EC2", "#D65DB1", "#FF6F91", "#FF9671", "#FFC75F", "#F9F871", "#9BDE7E", "#4BBC8E", "#039590", "#1C6E7D"]
+let pal2 = ["#4499EE", "#00B9F9", "#00D3E4", "#00E7BA", "#99F48C", "#CDEC7A", "#F6E278", "#FFD885", "#C7C768", "#8BB558"]
+let pal3 = ["#AA3B46", "#AF417F", "#8C5DB9", "#007DE0", "#0096E2", "#00A7BF", "#4A83C7", "#786AB5", "#974F94", "#A33467"]
+
+// Demo
+drawBarChart({"React": 71.7, "Vue.js": 40.5, "Angular": 21.9, "Preact": 9.5, "Svelite": 6.8, "Ember": 3.6},
+  {defaultWidth: 1000, valuePosition: "top", barColors: pal1, labelColor: "#FFFFFF",
+   barWidth: "60%", yAxis: "% of Current Developers", title:"Most Popular Front-End Frameworks"},
   $("body"));
 
 // Main bar chart creation function
@@ -102,6 +107,11 @@ function drawBarChart(data, options, element){ // TO DO: Make options an optiona
       });
     }
     else if (position === "bottom") $(".bar-value").addClass("value-bottom");
+    // If bar is too short, set value position above the bar instead.
+    $("#bar-chart-lib .bar-value").each(function() {
+      height = $(this).parent().height();
+      if (height < 25) $(this).removeClass(["value-top", "value-bottom"]).addClass("value-above");
+    });
   }
 
   // Set width and margins of chart and bar containers
