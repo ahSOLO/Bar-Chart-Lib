@@ -1,6 +1,6 @@
 // Input Test Variable
 drawBarChart({First: 50, Second: 30, Third: 20},
-  {defaultWidth: 1000, valuePosition: "top", barColors: ["#000000", "#110011", "#008080"], labelColor: "#FFFFFF", barWidth: "60%", xAxis: "X Axis", yAxis: "Y Axis"},
+  {defaultWidth: 1000, valuePosition: "top", barColors: ["#FF5733", "#FF9333", "#008080"], labelColor: "#FFFFFF", barWidth: "60%", xAxis: "X Axis", yAxis: "Y Axis"},
   $("body"));
 
 // Main bar chart creation function
@@ -16,10 +16,12 @@ function drawBarChart(data, options, element){ // TO DO: Make options an optiona
   let axis3 = ((maxValue * 1.1)*3/5).toFixed(0);
   let axis4 = ((maxValue * 1.1)*2/5).toFixed(0);
   let axis5 = ((maxValue * 1.1)*1/5).toFixed(0);
-  let yAxisTitle = "";
-  if (options.yAxis) yAxisTitle=options.yAxis;
-  let xAxisTitle = "";
-  if (options.xAxis) xAxisTitle=options.xAxis;
+  let yAxisLabel = "";
+  if (options.yAxis) yAxisLabel=options.yAxis;
+  let xAxisLabel = "";
+  if (options.xAxis) xAxisLabel=options.xAxis;
+  let chartTitle = "";
+  if (options.title) chartTitle = options.title;
 
   // Value Position variable
   let valuePosition = "top";
@@ -52,33 +54,33 @@ function drawBarChart(data, options, element){ // TO DO: Make options an optiona
 
   // Lay down HTML for chart axes and title
   function createChart(){
-    element.prepend('<div id="bar-chart-lib"><div id="title"><p>Bar Chart Title</p></div><div id="chart"><ul id="axis-ticks"><span id="y-axis-title">'
-      +yAxisTitle+'</span><li><span>'
+    element.prepend('<div id="bar-chart-lib"><div id="chart-title"><p>Bar Chart Title</p></div><div id="chart"><ul id="axis-ticks"><span id="y-axis-label">'
+      +yAxisLabel+'</span><li><span>'
       +axis1+'</span></li><li><span>'
       +axis2+'</span></li><li><span>'
       +axis3+'</span></li><li><span>'
       +axis4+'</span></li><li><span>'
-      +axis5+'</span></li></ul><ul id="bars"></ul><span id="x-axis-title">'
-      +xAxisTitle+'</span></div></div>');
-    $('#axis-ticks li').height(chartHeight/5 - 1);
+      +axis5+'</span></li></ul><ul id="bars"></ul><span id="x-axis-label">'
+      +xAxisLabel+'</span></div></div>');
+    $('#bar-chart-lib #axis-ticks li').height(chartHeight/5 - 1);
   }
 
   // Create bars and assign height based on % of total data value
   function createBars(){
     let index = 0;
     $.each(data,function(property, value){
-      $("#bars").append('<li><div class="bar"><span class=bar-value>'+value+'</span></div><span class=bar-title>'+property+'</span></li>')
+      $("#bar-chart-lib #bars").append('<li><div class="bar"><span class=bar-value>'+value+'</span></div><span class=bar-title>'+property+'</span></li>')
         .children("li").height(chartHeight);
-      $(".bar").eq(index).height((value / maxValue) * chartHeight / 1.1 );
+      $("#bar-chart-lib .bar").eq(index).height((value / maxValue) * chartHeight / 1.1 );
       index++;
     });
   }
 
   // Set value position depending on chosen option: top, middle, or bottom
   function setValuePos(position){
-    if (position === "top") $(".bar-value").addClass("value-top");
+    if (position === "top") $("#bar-chart-lib .bar-value").addClass("value-top");
     else if (position === "middle") {
-      $(".bar-value").each(function() {
+      $("#bar-chart-lib .bar-value").each(function() {
         height = $(this).parent().height();
         $(this).addClass("value-bottom").css("bottom", (height/2)-5+"px");
       });
@@ -88,16 +90,16 @@ function drawBarChart(data, options, element){ // TO DO: Make options an optiona
 
   // Set width and margins of chart and bar containers
   function setWidth(){
-    $("#chart").width(chartWidth);
-    $("#axis-ticks").width(axisTicksWidth);
-    $("#bars").width(BarsTotalWidth);
-    $("#bars li").width(BarsTotalWidth / length);
-    $("#x-axis-title").css("margin-left", BarsTotalWidth/2 - axisTicksWidth);
+    $("#bar-chart-lib #chart").width(chartWidth);
+    $("#bar-chart-lib #axis-ticks").width(axisTicksWidth);
+    $("#bar-chart-lib #bars").width(BarsTotalWidth);
+    $("#bar-chart-lib #bars li").width(BarsTotalWidth / length);
+    $("#bar-chart-lib #x-axis-label").width(BarsTotalWidth);
   }
 
   // Set width of bars and space between bars
   function setBarSpacing(widthPercent){
-    $(".bar").width(widthPercent).css("margin-left", BarsTotalWidth * ((1 - parseFloat(widthPercent)/100)*0.5) / length )
+    $("#bar-chart-lib .bar").width(widthPercent).css("margin-left", BarsTotalWidth * ((1 - parseFloat(widthPercent)/100)*0.5) / length )
   }
 
   // Adjust width and margins of bars on window resize
@@ -112,15 +114,18 @@ function drawBarChart(data, options, element){ // TO DO: Make options an optiona
 
   // Set color of bars to a single color or individually according to an array of colors
   function setBarColors(color){
-    if (typeof color === "string") $(".bar").css("background-color", color);
+    if (typeof color === "string") $("#bar-chart-lib .bar").css("background-color", color);
     else if (Array.isArray(color)) $.each(color, function(index) {
-      $(".bar").eq(index).css("background-color", color[index]);
+      $("#bar-chart-lib .bar").eq(index).css("background-color", color[index]);
     });
   }
 
   // Set color of label text
   function setLabelColor(color){
-    $("span").css("color", color);
+    $("#bar-chart-lib span").css("color", color);
   }
 
+  function setTitle(title, size="20px", color="#FFFFFF"){
+    $()
+  }
 }
