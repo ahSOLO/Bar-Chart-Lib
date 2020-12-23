@@ -31,9 +31,9 @@ Bar-Chart-Lib contains the following features:
 
 2.  Copy "barchartscript.js" and "barchartstyles.css" from this repository into a location accessible to your webpage.
 
-3.  Link "barchartstyles.css" to your webpage by adding the following link in the `head` element of your HTML: <link rel="stylesheet" href=[PATH]>, replacing [PATH] with the path to the barchartystyles.css file.
+3.  Link "barchartstyles.css" to your webpage by adding the following link to the `head` element of your HTML: `<link rel="stylesheet" href=[PATH]>`, replacing `[PATH]` with the path to the barchartystyles.css file.
 
-4.  Link "barchartscript.js" to your webpage by adding the following script **below** where you loaded the jQUery library: <script src =[PATH]></script>, replacing [PATH] with the path to the barchartscript.js file. 
+4.  Link "barchartscript.js" to your webpage by adding the following script **below** where you loaded the jQUery library: `<script src =[PATH]></script>`, replacing `[PATH]` with the path to the barchartscript.js file. 
 
 ![Example of Demo Code](demo/code-to-delete.jpg)
 
