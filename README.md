@@ -26,6 +26,7 @@ Bar-Chart-Lib contains the following features:
 - Built-in animations (option to disable).
 
 <h2> Installation </h2>
+
 1.  Install or import the [jQuery library](https://jquery.com/) onto your webpage.
 
 2.  Copy "barchartscript.js" and "barchartstyles.css" from this repository into a location accessible to your webpage.
