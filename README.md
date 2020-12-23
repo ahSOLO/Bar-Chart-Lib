@@ -12,6 +12,9 @@ A live demo of Bar-Chart-Lib can be found here: https://ahsolo.github.io/Bar-Cha
 
 <h2> Features </h2>
 
+![Automatic Width Adjustments](demo/auto-width.gif)
+![Stacked Bars](demo/stacked-bars.jpg)
+
 Bar-Chart-Lib contains the following features:
 - Adjustable height and width.
 - Automatic width adjustments when the webpage window is resized.
