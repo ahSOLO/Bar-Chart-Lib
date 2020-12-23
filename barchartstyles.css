@@ -14,7 +14,8 @@ body {
 }
 
 .bar-chart-lib #chart {
-  margin: 30px auto 0;
+  margin: 30px auto 30px;
+  left: 30px;
   position: relative;
   display: block;
 }

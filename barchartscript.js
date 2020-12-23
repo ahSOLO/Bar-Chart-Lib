@@ -83,7 +83,7 @@ function drawBarChart(data, options, element){
   let defaultWidth = $(window).width()-175;
   let minWidth = length * 90;
   if (options.defaultWidth) defaultWidth = options.defaultWidth;
-  let chartWidth = defaultWidth;
+  let chartWidth = Math.max(minWidth, defaultWidth);
   let chartHeight = 300;
   if (options.chartHeight) chartHeight = options.chartHeight;
   let axisTicksWidth = 18;
@@ -212,7 +212,7 @@ function drawBarChart(data, options, element){
   function autoWidth(){
     // Determine minimum width according to number of x axis labels
     $(window).resize(function() {
-      chartWidth = Math.max(minWidth, Math.min($(window).width()-175), defaultWidth); // Clamp the value of chartwidth to between 300 and window width - 100
+      chartWidth = Math.max(minWidth, $(window).width()-175); // Clamp the value of chartwidth to between 300 and window width - 100
       BarsTotalWidth = chartWidth-axisTicksWidth;
       setWidth();
       setBarSpacing(barWidth);
