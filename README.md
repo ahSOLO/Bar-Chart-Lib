@@ -16,13 +16,13 @@ A live demo of Bar-Chart-Lib can be found here: https://ahsolo.github.io/Bar-Cha
 
 Bar-Chart-Lib contains the following features:
 - Adjustable height and width.
-- Automatic width adjustments when the webpage window is resized.
-- The position of values can be chosen to be shown at the top, middle, or bottom of each bar.
-- The colors of bars, text, and the background can be customized.
-- Thickness of bars and the space between them can be adjusted.
+- Automatic width adjustments when the webpage window is resized (option to disable).
+- Choice where to show the position of values: the top, middle, or bottom of each bar.
+- Customizable colors for bars, text, and the background.
+- Bar thickness and the spaces between bars can be adjusted.
 - Custom labels can be written on each axis (X, Y).
 - Fully customizable title, with choice of font, font size, and color.
 - Multiple (stacked value bars): Show a collection of values stacked on top of each other in each bar.
-- Built-in animations that can be turned off.
+- Built-in animations (option to disable).
 
 <h2> How to use the API </h2>
