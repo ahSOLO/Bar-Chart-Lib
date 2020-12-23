@@ -25,6 +25,12 @@ Bar-Chart-Lib contains the following features:
 - Multiple (stacked value bars): Show a collection of values stacked on top of each other in each bar.
 - Built-in animations (option to disable).
 
+<h2> Installation </h2>
+1. Install or import the [jQuery library](https://jquery.com/) onto your webpage.
+2. Copy "barchartscript.js" and "barchartstyles.css" from this repository into a location accessible to your webpage.
+3. Link "barchartstyles.css" to your webpage by adding the following link in the `head` element of your HTML: <link rel="stylesheet" href=[PATH]>, replacing [PATH] with the path to the barchartystyles.css file.
+4. Link "barchartscript.js" to your webpage by adding the following script **below** where you loaded the jQUery library: <script src =[PATH]></script>, replacing [PATH] with the path to the barchartscript.js file. 
+
 <h2> How to use the API </h2>
 
 Bar-Chart-Lib uses the following function signature: 
@@ -34,8 +40,8 @@ Each parameter is described below.
 
 <h3> The "data" parameter </h3>
 `data` takes a javascript object in one of the following formats:
-1) To create a regular bar chart, `data` should be passed a javascript object where the property denotes the x-axis label of each respective bar, and the property value is a javascript number representing the value to be assigned to each respective bar: i.e. `{property1: property_value1, property2: property_value2, ... etc}`
-2) To create a stacked bar chart, `data` should be passed a javascript object containing further javascript objects: i.e. `{x_axis_label1: {property1: property_value1,  property2: property_value2}, {x_axis_label2: {property3: property_value3,  property4: property_value4}... etc}` The property of the container object will be used for the x-axis label of each stacked bar. The property and property value of the inner objects will be displayed on the stacked bar chart in the following format "property : property_value". It is possible for a stacked bar to only contain only a single property: i.e. `{x_axis_label1: {property1: property_value1}, ... }.`
+1. To create a regular bar chart, `data` should be passed a javascript object where the property denotes the x-axis label of each respective bar, and the property value is a javascript number representing the value to be assigned to each respective bar: i.e. `{property1: property_value1, property2: property_value2, ... etc}`.
+2. To create a stacked bar chart, `data` should be passed a javascript object containing further javascript objects: i.e. `{x_axis_label1: {property1: property_value1,  property2: property_value2}, {x_axis_label2: {property3: property_value3,  property4: property_value4}... etc}` The property of the container object will be used for the x-axis label of each stacked bar. The property and property value of the inner objects will be displayed on the stacked bar chart in the following format "property : property_value". It is possible for a stacked bar to only contain only a single property: i.e. `{x_axis_label1: {property1: property_value1}, ... }`.
 
 <h3> The "options" parameter </h3>
 
@@ -59,7 +65,7 @@ Each parameter is described below.
 
 **Display Options**
 - valuePosition: Where the value is displayed on each bar (string). Choices are "top", "middle", or "bottom". Note that values will automatically be displayed above a bar if the height of the bar is too short to display it within the bar.
-- setBarColors: The color(s) that each bar will take. To color all bars the same color, pass a single color code (string). To color each bar individually, pass an array of color codes (array of strings): each color code within the array will be mapped to a single bar from left to right, bottom to top.
+- setBarColors: The color(s) that each bar will take. To color all bars the same color, pass a single color code (string). To color each bar individually, pass an array of color codes (array of strings): each color code within the array will be mapped to a single bar from left to right, bottom to top. Bar-Chart-Lib includes three pre-made palettes for your convenience. They can be referenced through there variable names: pal1, pal2, and pal3.
 - setBackgroundColor: The color of the chart background (string).
 - setLabelColor: The color of all text within the chart, with the exception of the title.
 - animateBars: The default animations can be turned off by passing `animateBars:"off"` as an option.
