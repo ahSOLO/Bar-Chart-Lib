@@ -19,7 +19,7 @@ drawBarChart({"Apple": 1971, "Saudi Aramco": 1956, "Amazon": 1592, "Microsoft": 
 $("body").append("<br><br><br>")
 
 drawBarChart({"United States":{"Apple": 1971, "Amazon": 1592, "Microsoft": 1546, "Alphabet": 1116, "Facebook": 795, "Berkshire Hathaway": 496}, "Saudi Arabia":{"Saudi Aramco": 1956}, "China":{"Alibaba": 863, "Tencent": 724}, "Taiwan":{"Taiwan Semiconductor": 405}},
-  {valuePosition: "middle", barColors: ["#002868", "#BF0A30", "#002868", "#BF0A30", "#002868", "#BF0A30", "#006C35", "#df2407", "#9b870c", "#000097"],
+  {valuePosition: "middle", barColors: ["#002868", "#BF0A30", "#002868", "#BF0A30", "#002868", "#BF0A30", "#006C35", "#df1B12", "#9b870c", "#000097"],
   labelColor: "#FFFFFF", chartHeight: 600, defaultWidth: 900, autoWidth: "off", barWidth: "95%",
   yAxis: "Market Capitalization ($ Billion)", xAxis: "Country", title:"Top 10 Largest Companies in the World by Country", titleFont: "Sans", titleFontSize: "25px"},
   $("body"));
