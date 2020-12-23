@@ -31,9 +31,9 @@ body {
       float: left;
       position: relative;
       text-align: center;
-      width: 200px;
+      width: 250px;
       height: 0px;
-      left: -140px;
+      left: -160px;
       -webkit-transform:rotate(-90deg);
       -moz-transform:rotate(-90deg);
       -o-transform: rotate(-90deg);

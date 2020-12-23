@@ -6,7 +6,7 @@ let pal3 = ["#AA3B46", "#AF417F", "#8C5DB9", "#007DE0", "#0096E2", "#00A7BF", "#
 // Demo
 drawBarChart({"React": 71.7, "Vue.js": 40.5, "Angular": 21.9, "Preact": 9.5, "Svelite": 6.8, "Ember": 3.6},
   {valuePosition: "top", barColors: pal1, labelColor: "#FFFFFF",
-   barWidth: "60%", yAxis: "% of Current Developers", title:"Most Popular Front-End Frameworks"},
+   barWidth: "60%", yAxis: "% of Developers Currently Using", title:"Most Popular Front-End Frameworks"},
   $("body"));
 
 // Main bar chart creation function
@@ -14,39 +14,41 @@ function drawBarChart(data, options, element){ // TO DO: Make options an optiona
 
   // General Variables
   let values = Object.values(data);
-  let length = Object.keys(data).length; // To Do: make this compatible with tiered bar charts
-  // let total = values.reduce((a, b) => a + b, 0);
+  let length = Object.keys(data).length;
 
   // Determine Max Value
   let maxValue = 0;
   let _total = 0;
   for (i = 0; i < values.length; i++){
-    // If passing through an object for a stacked bar chart, sum of the total of all the values within the object
+    // If data input is an object (for a stacked bar chart), sum all the values within the object
     if (typeof values[i] === 'object' && values[i] !== null) _total = Object.values(values[i]).reduce((a,b) => a + b, 0);
     // Otherwise take the single value
     else _total = values[i];
-    // assign maxValue to the highest value
+    // assign maxValue to the highest totalled value
     if (_total > maxValue) maxValue = _total;
   }
 
-  // Tick values
+  // Set space between longest bar and the top of the chart
   let chartOverreach = 1.1;
   let digits = maxValue.toString().split('.')[0].length;
   let multiplier = parseInt("1"+"0".repeat(digits-1))
+  // If chart value is above 1, ensure the top tick on the y axis ends in 0
   if (multiplier > 1) chartOverreach = Math.ceil(maxValue / multiplier) * multiplier / maxValue;
+
+  // Assign Tick values
   let axis1 = (maxValue * chartOverreach).toFixed(0);
   let axis2 = ((maxValue * chartOverreach)*4/5).toFixed(0);
   let axis3 = ((maxValue * chartOverreach)*3/5).toFixed(0);
   let axis4 = ((maxValue * chartOverreach)*2/5).toFixed(0);
   let axis5 = ((maxValue * chartOverreach)*1/5).toFixed(0);
 
-  // Label Titles
+  // Assign Label Titles
   let yAxisLabel = "";
   if (options.yAxis) yAxisLabel=options.yAxis;
   let xAxisLabel = "";
   if (options.xAxis) xAxisLabel=options.xAxis;
 
-  // Chart Title
+  // Chart Title variables
   let chartTitle = "";
   if (options.title) chartTitle = options.title;
   let titleFont = "Arial";
@@ -60,7 +62,7 @@ function drawBarChart(data, options, element){ // TO DO: Make options an optiona
   let valuePosition = "top";
   if (options.valuePosition) valuePosition = options.valuePosition;
 
-  // Width + Height Variables
+  // Assign Width + Height Variables
   let defaultWidth = $(window).width()-150;
   if (options.defaultWidth) defaultWidth = options.defaultWidth;
   let chartWidth = defaultWidth;
@@ -78,7 +80,7 @@ function drawBarChart(data, options, element){ // TO DO: Make options an optiona
   createBars();
   setWidth();
   setBarSpacing(barWidth);
-  setTitle(chartTitle, titleFont, titleFontSize, titleColor)
+  setTitle(chartTitle, titleFont, titleFontSize, titleColor);
 
   // Optional Features
   if (options.autoWidth !== "off") autoWidth();
@@ -86,13 +88,11 @@ function drawBarChart(data, options, element){ // TO DO: Make options an optiona
   if (options.barColors) setBarColors(options.barColors);
   if (options.labelColor) setLabelColor(options.labelColor);
   if (options.backgroundColor) setBackgroundColor(options.backgroundColor);
-
-  // Animations
-  animateBars();
+  if (options.animate !== "off") animateBars();
 
   // FUNCTION DEFINITIONS BELOW
 
-  // Lay down HTML for chart axes and title
+  // Lay down HTML for chart, axes and title
   function createChart(){
     element.prepend('<div id="bar-chart-lib"><div id="chart-title"><p>Bar Chart Title</p></div><div id="chart"><span id="y-axis-label">'
       +yAxisLabel+'</span><ul id="axis-ticks"><li><span>'
@@ -102,7 +102,9 @@ function drawBarChart(data, options, element){ // TO DO: Make options an optiona
       +axis4+'</span></li><li><span>'
       +axis5+'</span></li></ul><ul id="bars"></ul><span id="x-axis-label">'
       +xAxisLabel+'</span></div></div>');
+    // set space between ticks
     $('#bar-chart-lib #axis-ticks li').height(chartHeight/5 - 1);
+    // Center y-axis label
     $('#bar-chart-lib #y-axis-label').css("top", chartHeight/2+"px");
   }
 
@@ -112,29 +114,25 @@ function drawBarChart(data, options, element){ // TO DO: Make options an optiona
     let barHeight = 0;
     let heightTotal = 0;
     $.each(data,function(property, value){
-      // If bar data is an object
+      // If bar data is an object...
       if (typeof value === "object" && value !== null) {
         barHeight = (Object.values(value)[0] / maxValue) * chartHeight / chartOverreach
         heightTotal = barHeight;
         // create first bar along with category name
         $("#bar-chart-lib #bars").append('<li><div class="bar"><span class=bar-value>'+Object.keys(value)[0] + ": " + Object.values(value)[0] +'</span></div><span class=bar-title>'+property+'</span></li>')
-        // Set background height
-        .children("li").height(chartHeight);
         // Set height of first bar
-        $("#bar-chart-lib .bar").eq(index).height((Object.values(value)[0] / maxValue) * chartHeight / chartOverreach );
+        $("#bar-chart-lib .bar").eq(index).height(barHeight);
         // Start loop for creation of subsequent bars
         for (i = 1; i < Object.values(value).length; i++){
-          // Remove smooth edges on previous bar
+          // Remove smooth corners on previous bar
           $("#bar-chart-lib .bar").eq(index).css({"border-radius": "0px", "-webkit-border-radius": "0px", "-moz-border-radius": "0px"})
           // Create subsequent bar
           $("#bar-chart-lib #bars li").append('<div class="bar"><span class=bar-value>'+Object.keys(value)[i] + ": " + Object.values(value)[i] +'</span></div>').height(chartHeight)
-          // Set background height
-          .children("li").height(chartHeight);
           index++;
           // Assign height to subsequent bar
           barHeight = (Object.values(value)[i] / maxValue) * chartHeight / chartOverreach;
           $("#bar-chart-lib .bar").eq(index).height(barHeight)
-            // set the bottom of subsequent bars to begin where the previous bar ended
+            // start the subsequent bars where the previous bar ended
             .css("bottom", heightTotal);
           heightTotal+=barHeight;
         }
@@ -143,27 +141,30 @@ function drawBarChart(data, options, element){ // TO DO: Make options an optiona
       else {
         // Create bar along with category name
         $("#bar-chart-lib #bars").append('<li><div class="bar"><span class=bar-value>'+value+'</span></div><span class=bar-title>'+property+'</span></li>')
-        // Set background height
-        .children("li").height(chartHeight);
         // Set bar height
         barHeight = (value / maxValue) * chartHeight / chartOverreach
         $("#bar-chart-lib .bar").eq(index).height(barHeight);
       }
       index++;
     });
+  // Set height for background behind bars
+  $("#bar-chart-lib #bars li").height(chartHeight);
   }
 
-  // Set value position depending on chosen option: top, middle, or bottom
+  // Position value text depending on chosen option: top, middle, or bottom
   function setValuePos(position){
+    // top position
     if (position === "top") $("#bar-chart-lib .bar-value").addClass("value-top");
+    // middle position
     else if (position === "middle") {
       $("#bar-chart-lib .bar-value").each(function() {
         height = $(this).parent().height();
         $(this).addClass("value-bottom").css("bottom", (height/2)-5+"px");
       });
     }
+    // bottom position
     else if (position === "bottom") $(".bar-value").addClass("value-bottom");
-    // If bar is too short, set value position above the bar instead.
+    // If bar is too short, position the value above the bar instead.
     $("#bar-chart-lib .bar-value").each(function() {
       height = $(this).parent().height();
       if (height < 25) $(this).removeClass(["value-top", "value-bottom"]).addClass("value-above");
@@ -210,14 +211,17 @@ function drawBarChart(data, options, element){ // TO DO: Make options an optiona
     $("#bar-chart-lib span").css("color", color);
   }
 
+  // Set title, font, fontsize and color of title
   function setTitle(title, font, size, color){
     $("#bar-chart-lib #chart-title").text(title).css({"font-family":font, "font-size":size, "font-color":color});
   }
 
+  // Set color of chart background
   function setBackgroundColor(color){
     $('#bar-chart-lib #bars').css("background-color", color);
   }
 
+  // Animate chart bars
   function animateBars(){
     $('#bar-chart-lib .bar').each( function(index, bar){
       let height = $(this).height();
