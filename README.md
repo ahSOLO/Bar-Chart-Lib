@@ -44,7 +44,7 @@ Bar-Chart-Lib contains the following features:
 Bar-Chart-Lib uses the following function signature: 
 ` drawBarChart(data, options, element) `
 
-Each parameter is described below.
+Each parameter is described in detail below.
 
 <h3> The "data" parameter </h3>
 `data` takes a javascript object in one of the following formats:
