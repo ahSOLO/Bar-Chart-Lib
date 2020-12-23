@@ -13,7 +13,7 @@ $("body").append("<br>")
 
 drawBarChart({"Apple": 1971, "Saudi Aramco": 1956, "Amazon": 1592, "Microsoft": 1546, "Alphabet": 1116, "Alibaba": 863, "Facebook": 795, "Tencent": 724, "Berkshire Hathaway": 496, "Taiwan Semiconductor": 405},
   {valuePosition: "middle", barColors: pal3, labelColor: "#FFFFFF", chartHeight: 400, barWidth: "80%", yAxis: "Market Capitalization ($ Billion)",
-  xAxis: "Company", title:"Top 10 Largest Companies in the World", titleFont: "impact", titleFontSize: "30px", titleColor: "#007DE0"},
+  xAxis: "Company", title:"Top 10 Largest Companies in the World", titleFontSize: "30px", titleColor: "#007DE0"},
   $("body"));
 
 $("body").append("<br><br><br>")
