@@ -1,5 +1,7 @@
 # Bar-Chart-Lib
 
+![Bar-Chart-Lib in Action](demo/preview.gif)
+
 <h2> About </h2>
 
 Bar-Chart-Lib is a tool for rendering bar charts on web pages. It is simple to set up, and robust in its applications. Bar-Chart-Lib was created as part of a preparatory assignment for Lighthouse Labs' web development bootcamp.
@@ -11,7 +13,13 @@ A live demo of Bar-Chart-Lib can be found here: https://ahsolo.github.io/Bar-Cha
 <h2> Features </h2>
 
 Bar-Chart-Lib contains the following features:
-- test
-- test 2
+- Adjustable height and width.
+- Automatic width adjustments when the webpage window is resized.
+- The position of values can be chosen to be shown at the top, middle, or bottom of each bar.
+- The colors of bars, text, and the background can be customized.
+- Thickness of bars and the space between them can be adjusted.
+- Custom labels can be written on each axis (X, Y).
+- Fully customizable title, with choice of font, font size, and color.
+- Multiple (stacked value bars): It is possible to pass a collection of values in for each bar.
 
 <h2> How to use the API </h2>
