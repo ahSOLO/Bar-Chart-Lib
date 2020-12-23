@@ -91,8 +91,8 @@ function drawBarChart(data, options, element){ // TO DO: Make options an optiona
   let chartHeight = 300;
   if (options.chartHeight) chartHeight = options.chartHeight;
   let axisTicksWidth = 18;
-    let axisDigits = axis1.toString().split('.')[0].length;
-    if (axisDigits > 1) axisTicksWidth = 18 + 9 * (axisDigits-1);
+  let axisDigits = axis1.toString().split('.')[0].length;
+  if (axisDigits > 1) axisTicksWidth = 18 + 9 * (axisDigits-1);
   let BarsTotalWidth = chartWidth-axisTicksWidth;
   let barWidth = "70%"
   if (options.barWidth) barWidth = options.barWidth;
@@ -103,10 +103,10 @@ function drawBarChart(data, options, element){ // TO DO: Make options an optiona
   setWidth();
   setBarSpacing(barWidth);
   setTitle(chartTitle, titleFont, titleFontSize, titleColor);
+  setValuePos(valuePosition);
 
   // Optional Features
   if (options.autoWidth !== "off") autoWidth();
-  if (options.valuePosition) setValuePos(options.valuePosition);
   if (options.barColors) setBarColors(options.barColors);
   if (options.labelColor) setLabelColor(options.labelColor);
   if (options.backgroundColor) setBackgroundColor(options.backgroundColor);
