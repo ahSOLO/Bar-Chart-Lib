@@ -48,7 +48,7 @@ Each parameter is described below.
 - titleColor: The font color of the chart title (string).
 
 **Width and Height Options:**
-- autoWidth: Unless this option is turned off (by passing autoWidth:"off" as an option), the bar will automatically resize its width when the webpage window is resized.
+- autoWidth: Unless this option is turned off (by passing ```autoWidth:"off"``` as an option), the bar will automatically resize its width when the webpage window is resized.
 - defaultWidth: The default width of the chart in pixels (number). Note that setting a ```defaultWidth``` will not automatically disable ```autoWidth```.
 - barWidth: The thickness of bars, expessed as a percentage (string). Use this option to customize the spaces between bars.
 - chartHeight: The height of the chart in pixels (number).
@@ -62,7 +62,7 @@ Each parameter is described below.
 - setBarColors: The color(s) that each bar will take. To color all bars the same color, pass a single color code (string). To color each bar individually, pass an array of color codes (array of strings): each color code within the array will be mapped to a single bar from left to right, bottom to top.
 - setBackgroundColor: The color of the chart background (string).
 - setLabelColor: The color of all text within the chart, with the exception of the title.
-- animateBars: The default animations can be turned off by passing animateBars:"off" as an option.
+- animateBars: The default animations can be turned off by passing ```animateBars:"off"``` as an option.
 
 <h3> The "element" parameter </h3>
 This parameter takes a jQuery element designating where in the web page the bar chart should be rendered to.
