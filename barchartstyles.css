@@ -31,9 +31,9 @@ body {
       float: left;
       position: relative;
       text-align: center;
-      width: 150px;
+      width: 200px;
       height: 0px;
-      left: -125px;
+      left: -140px;
       -webkit-transform:rotate(-90deg);
       -moz-transform:rotate(-90deg);
       -o-transform: rotate(-90deg);
@@ -43,7 +43,6 @@ body {
 
     #bar-chart-lib #axis-ticks li {
       text-align: left;
-      width: 25px;
       list-style: none;
       height: 74px;
       border-top: 1px solid #444444;

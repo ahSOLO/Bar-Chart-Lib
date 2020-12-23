@@ -4,8 +4,8 @@ let pal2 = ["#4499EE", "#00B9F9", "#00D3E4", "#00E7BA", "#99F48C", "#CDEC7A", "#
 let pal3 = ["#AA3B46", "#AF417F", "#8C5DB9", "#007DE0", "#0096E2", "#00A7BF", "#4A83C7", "#786AB5", "#974F94", "#A33467", "#C07D96", "#BDA5AD"]
 
 // Demo
-drawBarChart({"React": {first: 71.7, second: 50}, "Vue.js": 40.5, "Angular": 21.9, "Preact": 9.5, "Svelite": 6.8, "Ember": 3.6},
-  {defaultWidth: 1000, valuePosition: "top", barColors: pal1, labelColor: "#FFFFFF",
+drawBarChart({"React": 71.7, "Vue.js": 40.5, "Angular": 21.9, "Preact": 9.5, "Svelite": 6.8, "Ember": 3.6},
+  {valuePosition: "top", barColors: pal1, labelColor: "#FFFFFF",
    barWidth: "60%", yAxis: "% of Current Developers", title:"Most Popular Front-End Frameworks"},
   $("body"));
 
@@ -30,11 +30,15 @@ function drawBarChart(data, options, element){ // TO DO: Make options an optiona
   }
 
   // Tick values
-  let axis1 = (maxValue * 1.1).toFixed(0); // To Do: Make these values snap to multiples of 2, 5, 10, etc.
-  let axis2 = ((maxValue * 1.1)*4/5).toFixed(0);
-  let axis3 = ((maxValue * 1.1)*3/5).toFixed(0);
-  let axis4 = ((maxValue * 1.1)*2/5).toFixed(0);
-  let axis5 = ((maxValue * 1.1)*1/5).toFixed(0);
+  let chartOverreach = 1.1;
+  let digits = maxValue.toString().split('.')[0].length;
+  let multiplier = parseInt("1"+"0".repeat(digits-1))
+  if (multiplier > 1) chartOverreach = Math.ceil(maxValue / multiplier) * multiplier / maxValue;
+  let axis1 = (maxValue * chartOverreach).toFixed(0);
+  let axis2 = ((maxValue * chartOverreach)*4/5).toFixed(0);
+  let axis3 = ((maxValue * chartOverreach)*3/5).toFixed(0);
+  let axis4 = ((maxValue * chartOverreach)*2/5).toFixed(0);
+  let axis5 = ((maxValue * chartOverreach)*1/5).toFixed(0);
 
   // Label Titles
   let yAxisLabel = "";
@@ -57,12 +61,14 @@ function drawBarChart(data, options, element){ // TO DO: Make options an optiona
   if (options.valuePosition) valuePosition = options.valuePosition;
 
   // Width + Height Variables
-  let defaultWidth = 1000;
+  let defaultWidth = $(window).width()-150;
   if (options.defaultWidth) defaultWidth = options.defaultWidth;
   let chartWidth = defaultWidth;
   let chartHeight = 300;
   if (options.chartHeight) chartHeight = options.chartHeight;
-  let axisTicksWidth = 25;
+  let axisTicksWidth = 18;
+    let axisDigits = axis1.toString().split('.')[0].length;
+    if (axisDigits > 1) axisTicksWidth = 18 + 9 * (axisDigits-1);
   let BarsTotalWidth = chartWidth-axisTicksWidth;
   let barWidth = "70%"
   if (options.barWidth) barWidth = options.barWidth;
@@ -80,6 +86,9 @@ function drawBarChart(data, options, element){ // TO DO: Make options an optiona
   if (options.barColors) setBarColors(options.barColors);
   if (options.labelColor) setLabelColor(options.labelColor);
   if (options.backgroundColor) setBackgroundColor(options.backgroundColor);
+
+  // Animations
+  animateBars();
 
   // FUNCTION DEFINITIONS BELOW
 
@@ -100,25 +109,45 @@ function drawBarChart(data, options, element){ // TO DO: Make options an optiona
   // Create bars and assign height based on % of total data value
   function createBars(){
     let index = 0;
-    let previousHeight = 0;
+    let barHeight = 0;
+    let heightTotal = 0;
     $.each(data,function(property, value){
+      // If bar data is an object
       if (typeof value === "object" && value !== null) {
+        barHeight = (Object.values(value)[0] / maxValue) * chartHeight / chartOverreach
+        heightTotal = barHeight;
+        // create first bar along with category name
         $("#bar-chart-lib #bars").append('<li><div class="bar"><span class=bar-value>'+Object.keys(value)[0] + ": " + Object.values(value)[0] +'</span></div><span class=bar-title>'+property+'</span></li>')
+        // Set background height
         .children("li").height(chartHeight);
-        $("#bar-chart-lib .bar").eq(index).height((Object.values(value)[0] / maxValue) * chartHeight / 1.1 );
-        previousHeight = 0
+        // Set height of first bar
+        $("#bar-chart-lib .bar").eq(index).height((Object.values(value)[0] / maxValue) * chartHeight / chartOverreach );
+        // Start loop for creation of subsequent bars
         for (i = 1; i < Object.values(value).length; i++){
+          // Remove smooth edges on previous bar
           $("#bar-chart-lib .bar").eq(index).css({"border-radius": "0px", "-webkit-border-radius": "0px", "-moz-border-radius": "0px"})
-          previousHeight += (Object.values(value)[i-1] / maxValue) * chartHeight / 1.1;
-          $("#bar-chart-lib #bars li").append('<div class="bar"><span class=bar-value>'+Object.keys(value)[i] + ": " + Object.values(value)[i] +'</span></div>').height(chartHeight);
-          index++
-          $("#bar-chart-lib .bar").eq(index).height((Object.values(value)[i]/ maxValue) * chartHeight / 1.1 ).css("bottom", previousHeight);
+          // Create subsequent bar
+          $("#bar-chart-lib #bars li").append('<div class="bar"><span class=bar-value>'+Object.keys(value)[i] + ": " + Object.values(value)[i] +'</span></div>').height(chartHeight)
+          // Set background height
+          .children("li").height(chartHeight);
+          index++;
+          // Assign height to subsequent bar
+          barHeight = (Object.values(value)[i] / maxValue) * chartHeight / chartOverreach;
+          $("#bar-chart-lib .bar").eq(index).height(barHeight)
+            // set the bottom of subsequent bars to begin where the previous bar ended
+            .css("bottom", heightTotal);
+          heightTotal+=barHeight;
         }
       }
+      // If bar data is a number
       else {
+        // Create bar along with category name
         $("#bar-chart-lib #bars").append('<li><div class="bar"><span class=bar-value>'+value+'</span></div><span class=bar-title>'+property+'</span></li>')
-          .children("li").height(chartHeight);
-        $("#bar-chart-lib .bar").eq(index).height((value / maxValue) * chartHeight / 1.1 );
+        // Set background height
+        .children("li").height(chartHeight);
+        // Set bar height
+        barHeight = (value / maxValue) * chartHeight / chartOverreach
+        $("#bar-chart-lib .bar").eq(index).height(barHeight);
       }
       index++;
     });
@@ -145,7 +174,7 @@ function drawBarChart(data, options, element){ // TO DO: Make options an optiona
   function setWidth(){
     $("#bar-chart-lib #chart").width(chartWidth);
     $("#bar-chart-lib #axis-ticks").width(axisTicksWidth);
-    $("#bar-chart-lib #axis-ticks li").css("padding-right", BarsTotalWidth);
+    $("#bar-chart-lib #axis-ticks li").css("padding-right", chartWidth);
     $("#bar-chart-lib #bars").width(BarsTotalWidth);
     $("#bar-chart-lib #bars li").width(BarsTotalWidth / length);
     $("#bar-chart-lib #x-axis-label").width(BarsTotalWidth);
@@ -153,13 +182,15 @@ function drawBarChart(data, options, element){ // TO DO: Make options an optiona
 
   // Set width of bars and space between bars
   function setBarSpacing(widthPercent){
-    $("#bar-chart-lib .bar").width(widthPercent).css("margin-left", BarsTotalWidth * ((1 - parseFloat(widthPercent)/100)*0.5) / length )
+    $("#bar-chart-lib .bar")
+      .width(widthPercent)
+      .css("margin-left", BarsTotalWidth * ((1 - parseFloat(widthPercent)/100)*0.5) / length )
   }
 
   // Adjust width and margins of bars on window resize
   function autoWidth(){
     $(window).resize(function() {
-      chartWidth = Math.max(300, Math.min($(window).width()-100, defaultWidth)); // Clamp the value of chartwidth to between 300 and window width - 100
+      chartWidth = Math.max(300, Math.min($(window).width()-150, defaultWidth)); // Clamp the value of chartwidth to between 300 and window width - 100
       BarsTotalWidth = chartWidth-axisTicksWidth;
       setWidth();
       setBarSpacing(barWidth);
@@ -185,5 +216,12 @@ function drawBarChart(data, options, element){ // TO DO: Make options an optiona
 
   function setBackgroundColor(color){
     $('#bar-chart-lib #bars').css("background-color", color);
+  }
+
+  function animateBars(){
+    $('#bar-chart-lib .bar').each( function(index, bar){
+      let height = $(this).height();
+      $(this).height(0).animate({"height": height}, 900)
+    });
   }
 }
