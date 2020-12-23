@@ -5,7 +5,7 @@ body {
   background: #30303A;
 }
 
-#bar-chart-lib #chart-title {
+.bar-chart-lib #chart-title {
   margin-top: 2em;
   display: block;
   text-align:center;
@@ -13,13 +13,13 @@ body {
   line-height: 1;
 }
 
-#bar-chart-lib #chart {
+.bar-chart-lib #chart {
   margin: 30px auto 0;
   position: relative;
   display: block;
 }
 
-  #bar-chart-lib #axis-ticks {
+  .bar-chart-lib #axis-ticks {
     display: inline-block;
     height: 100%;
     margin: 0;
@@ -27,7 +27,7 @@ body {
     border: 0;
   }
 
-    #bar-chart-lib #y-axis-label {
+    .bar-chart-lib #y-axis-label {
       float: left;
       position: relative;
       text-align: center;
@@ -41,7 +41,7 @@ body {
       transform: rotate(-90deg);
     }
 
-    #bar-chart-lib #axis-ticks li {
+    .bar-chart-lib #axis-ticks li {
       text-align: left;
       list-style: none;
       height: 74px;
@@ -49,19 +49,19 @@ body {
       position: relative;
     }
 
-     #bar-chart-lib #axis-ticks li span {
+     .bar-chart-lib #axis-ticks li span {
         position: absolute;
         top: 0;
       }
 
-      #bar-chart-lib #x-axis-label {
+      .bar-chart-lib #x-axis-label {
       display: inline-block;
       text-align: center;
       position: relative;
       top: 50px;
     }
 
-    #bar-chart-lib #bars {
+    .bar-chart-lib #bars {
     display: inline-block;
     background-color: #101010;
     -webkit-border-radius: 4px;
@@ -72,13 +72,13 @@ body {
     border: 0;
   }
 
-    #bar-chart-lib #bars li {
+    .bar-chart-lib #bars li {
       display: table-cell;
       text-align: center;
       position: relative;
     }
 
-    #bar-chart-lib .bar {
+    .bar-chart-lib .bar {
     display: block;
     width: 70%;
     margin-left: auto;
@@ -90,37 +90,38 @@ body {
     border-radius: 8px 8px 0px 0px;
   }
 
-    #bar-chart-lib .bar-value {
+    .bar-chart-lib .bar-value {
       text-align: center;
       left: 0;
       right: 0;
     }
 
-      #bar-chart-lib .value-above {
+      .bar-chart-lib .value-above {
         position: relative;
         top: -18px;
       }
 
-      #bar-chart-lib .value-top {
+      .bar-chart-lib .value-top {
         position: relative;
         top: 5px;
       }
 
-      #bar-chart-lib .value-bottom {
+      .bar-chart-lib .value-bottom {
         position: absolute;
         bottom: 5px;
       }
 
-    #bar-chart-lib .bar-title {
+    .bar-chart-lib .bar-title {
       width: 100%;
-      position: absolute;
-      bottom: -1.5em;
+      position: relative;
       left: 0;
       text-align: center;
       font-size: 16px;
+      margin-right: -10px;
+      margin-left: -10px;
     }
 
-#bar-chart-lib span {
+.bar-chart-lib span {
   color: white;
   font-family: Arial, Helvetica, sans-serif;
 }

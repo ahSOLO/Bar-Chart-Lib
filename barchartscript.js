@@ -5,12 +5,33 @@ let pal3 = ["#AA3B46", "#AF417F", "#8C5DB9", "#007DE0", "#0096E2", "#00A7BF", "#
 
 // Demo
 drawBarChart({"React": 71.7, "Vue.js": 40.5, "Angular": 21.9, "Preact": 9.5, "Svelite": 6.8, "Ember": 3.6},
-  {valuePosition: "top", barColors: pal1, labelColor: "#FFFFFF",
-   barWidth: "60%", yAxis: "% of Developers Currently Using", title:"Most Popular Front-End Frameworks"},
+  {valuePosition: "top", barColors: pal1, labelColor: "#FFFFFF", defaultWidth: 500, autoWidth: "off", barWidth: "60%",
+  yAxis: "% of Developers Currently Using", title:"Most Popular Front-End Frameworks"},
   $("body"));
+
+$("body").append("<br>")
+
+drawBarChart({"Apple": 1971, "Saudi Aramco": 1956, "Amazon": 1592, "Microsoft": 1546, "Alphabet": 1116, "Alibaba": 863, "Facebook": 795, "Tencent": 724, "Berkshire Hathaway": 496, "Taiwan Semiconductor": 405},
+  {valuePosition: "middle", barColors: pal3, labelColor: "#FFFFFF", chartHeight: 400, barWidth: "80%", yAxis: "Market Capitalization ($ Billion)",
+  xAxis: "Company", title:"Top 10 Largest Companies in the World", titleFont: "impact", titleFontSize: "30px", titleColor: "#007DE0"},
+  $("body"));
+
+$("body").append("<br><br><br>")
+
+drawBarChart({"United States":{"Apple": 1971, "Amazon": 1592, "Microsoft": 1546, "Alphabet": 1116, "Facebook": 795, "Berkshire Hathaway": 496}, "Saudi Arabia":{"Saudi Aramco": 1956}, "China":{"Alibaba": 863, "Tencent": 724}, "Taiwan":{"Taiwan Semiconductor": 405}},
+  {valuePosition: "middle", barColors: ["#002868", "#BF0A30", "#002868", "#BF0A30", "#002868", "#BF0A30", "#006C35", "#df2407", "#9b870c", "#000097"],
+  labelColor: "#FFFFFF", chartHeight: 600, defaultWidth: 900, autoWidth: "off", barWidth: "95%",
+  yAxis: "Market Capitalization ($ Billion)", xAxis: "Country", title:"Top 10 Largest Companies in the World by Country", titleFont: "Sans", titleFontSize: "25px"},
+  $("body"));
+
 
 // Main bar chart creation function
 function drawBarChart(data, options, element){ // TO DO: Make options an optional variable
+
+  // Instance tracker (if multiple charts are on the same page)
+  let instance = 0;
+  while ( $("#bc_id_"+instance.toString()).length > 0) instance++;
+  let ins = instance.toString();
 
   // General Variables
   let values = Object.values(data);
@@ -94,7 +115,7 @@ function drawBarChart(data, options, element){ // TO DO: Make options an optiona
 
   // Lay down HTML for chart, axes and title
   function createChart(){
-    element.prepend('<div id="bar-chart-lib"><div id="chart-title"><p>Bar Chart Title</p></div><div id="chart"><span id="y-axis-label">'
+    element.eq(0).append('<div class="bar-chart-lib" id="bc_id_'+ins+'"><div id="chart-title"><p>Bar Chart Title</p></div><div id="chart"><span id="y-axis-label">'
       +yAxisLabel+'</span><ul id="axis-ticks"><li><span>'
       +axis1+'</span></li><li><span>'
       +axis2+'</span></li><li><span>'
@@ -103,9 +124,9 @@ function drawBarChart(data, options, element){ // TO DO: Make options an optiona
       +axis5+'</span></li></ul><ul id="bars"></ul><span id="x-axis-label">'
       +xAxisLabel+'</span></div></div>');
     // set space between ticks
-    $('#bar-chart-lib #axis-ticks li').height(chartHeight/5 - 1);
+    $('#bc_id_'+ins+' #axis-ticks li').height(chartHeight/5 - 1);
     // Center y-axis label
-    $('#bar-chart-lib #y-axis-label').css("top", chartHeight/2+"px");
+    $('#bc_id_'+ins+' #y-axis-label').css("top", chartHeight/2+"px");
   }
 
   // Create bars and assign height based on % of total data value
@@ -119,19 +140,19 @@ function drawBarChart(data, options, element){ // TO DO: Make options an optiona
         barHeight = (Object.values(value)[0] / maxValue) * chartHeight / chartOverreach
         heightTotal = barHeight;
         // create first bar along with category name
-        $("#bar-chart-lib #bars").append('<li><div class="bar"><span class=bar-value>'+Object.keys(value)[0] + ": " + Object.values(value)[0] +'</span></div><span class=bar-title>'+property+'</span></li>')
+        $('#bc_id_'+ins+' #bars').append('<li><div class="bar"><span class=bar-value>'+Object.keys(value)[0] + ": " + Object.values(value)[0] +'</span></div><span class=bar-title>'+property+'</span></li>')
         // Set height of first bar
-        $("#bar-chart-lib .bar").eq(index).height(barHeight);
+        $('#bc_id_'+ins+' .bar').eq(index).height(barHeight);
         // Start loop for creation of subsequent bars
-        for (i = 1; i < Object.values(value).length; i++){
+        for (i = 1; i < Object.keys(value).length; i++){
           // Remove smooth corners on previous bar
-          $("#bar-chart-lib .bar").eq(index).css({"border-radius": "0px", "-webkit-border-radius": "0px", "-moz-border-radius": "0px"})
+          $('#bc_id_'+ins+' .bar').eq(index).css({"border-radius": "0px", "-webkit-border-radius": "0px", "-moz-border-radius": "0px"})
           // Create subsequent bar
-          $("#bar-chart-lib #bars li").append('<div class="bar"><span class=bar-value>'+Object.keys(value)[i] + ": " + Object.values(value)[i] +'</span></div>').height(chartHeight)
+          $('#bc_id_'+ins+' #bars li').eq(-1).append('<div class="bar"><span class=bar-value>'+Object.keys(value)[i] + ": " + Object.values(value)[i] +'</span></div>').height(chartHeight)
           index++;
           // Assign height to subsequent bar
           barHeight = (Object.values(value)[i] / maxValue) * chartHeight / chartOverreach;
-          $("#bar-chart-lib .bar").eq(index).height(barHeight)
+          $('#bc_id_'+ins+' .bar').eq(index).height(barHeight)
             // start the subsequent bars where the previous bar ended
             .css("bottom", heightTotal);
           heightTotal+=barHeight;
@@ -140,32 +161,34 @@ function drawBarChart(data, options, element){ // TO DO: Make options an optiona
       // If bar data is a number
       else {
         // Create bar along with category name
-        $("#bar-chart-lib #bars").append('<li><div class="bar"><span class=bar-value>'+value+'</span></div><span class=bar-title>'+property+'</span></li>')
+        $('#bc_id_'+ins+' #bars').append('<li><div class="bar"><span class=bar-value>'+value+'</span></div><span class=bar-title>'+property+'</span></li>')
         // Set bar height
         barHeight = (value / maxValue) * chartHeight / chartOverreach
-        $("#bar-chart-lib .bar").eq(index).height(barHeight);
+        $('#bc_id_'+ins+' .bar').eq(index).height(barHeight);
       }
       index++;
     });
   // Set height for background behind bars
-  $("#bar-chart-lib #bars li").height(chartHeight);
+  $('#bc_id_'+ins+' #bars li').height(chartHeight);
+  // Set bar title location
+  $('#bc_id_'+ins+' .bar-title').css("top", chartHeight + 5);
   }
 
   // Position value text depending on chosen option: top, middle, or bottom
   function setValuePos(position){
     // top position
-    if (position === "top") $("#bar-chart-lib .bar-value").addClass("value-top");
+    if (position === "top") $('#bc_id_'+ins+' .bar-value').addClass("value-top");
     // middle position
     else if (position === "middle") {
-      $("#bar-chart-lib .bar-value").each(function() {
+      $('#bc_id_'+ins+' .bar-value').each(function() {
         height = $(this).parent().height();
         $(this).addClass("value-bottom").css("bottom", (height/2)-5+"px");
       });
     }
     // bottom position
-    else if (position === "bottom") $(".bar-value").addClass("value-bottom");
+    else if (position === "bottom") $('#bc_id_'+ins+' .bar-value').addClass("value-bottom");
     // If bar is too short, position the value above the bar instead.
-    $("#bar-chart-lib .bar-value").each(function() {
+    $('#bc_id_'+ins+' .bar-value').each(function() {
       height = $(this).parent().height();
       if (height < 25) $(this).removeClass(["value-top", "value-bottom"]).addClass("value-above");
     });
@@ -173,17 +196,17 @@ function drawBarChart(data, options, element){ // TO DO: Make options an optiona
 
   // Set width and margins of chart and bar containers
   function setWidth(){
-    $("#bar-chart-lib #chart").width(chartWidth);
-    $("#bar-chart-lib #axis-ticks").width(axisTicksWidth);
-    $("#bar-chart-lib #axis-ticks li").css("padding-right", chartWidth);
-    $("#bar-chart-lib #bars").width(BarsTotalWidth);
-    $("#bar-chart-lib #bars li").width(BarsTotalWidth / length);
-    $("#bar-chart-lib #x-axis-label").width(BarsTotalWidth);
+    $('#bc_id_'+ins+' #chart').width(chartWidth);
+    $('#bc_id_'+ins+' #axis-ticks').width(axisTicksWidth);
+    $('#bc_id_'+ins+' #axis-ticks li').css("padding-right", chartWidth);
+    $('#bc_id_'+ins+' #bars').width(BarsTotalWidth);
+    $('#bc_id_'+ins+' #bars li').width(BarsTotalWidth / length);
+    $('#bc_id_'+ins+' #x-axis-label').width(BarsTotalWidth);
   }
 
   // Set width of bars and space between bars
   function setBarSpacing(widthPercent){
-    $("#bar-chart-lib .bar")
+    $('#bc_id_'+ins+' .bar')
       .width(widthPercent)
       .css("margin-left", BarsTotalWidth * ((1 - parseFloat(widthPercent)/100)*0.5) / length )
   }
@@ -200,30 +223,30 @@ function drawBarChart(data, options, element){ // TO DO: Make options an optiona
 
   // Set color of bars to a single color or individually according to an array of colors
   function setBarColors(color){
-    if (typeof color === "string") $("#bar-chart-lib .bar").css("background-color", color);
+    if (typeof color === "string") $('#bc_id_'+ins+' .bar').css("background-color", color);
     else if (Array.isArray(color)) $.each(color, function(index) {
-      $("#bar-chart-lib .bar").eq(index).css("background-color", color[index]);
+      $('#bc_id_'+ins+' .bar').eq(index).css("background-color", color[index]);
     });
   }
 
   // Set color of label text
   function setLabelColor(color){
-    $("#bar-chart-lib span").css("color", color);
+    $('#bc_id_'+ins+' span').css("color", color);
   }
 
   // Set title, font, fontsize and color of title
   function setTitle(title, font, size, color){
-    $("#bar-chart-lib #chart-title").text(title).css({"font-family":font, "font-size":size, "font-color":color});
+    $('#bc_id_'+ins+' #chart-title').text(title).css({"font-family":font, "font-size":size, "color":color});
   }
 
   // Set color of chart background
   function setBackgroundColor(color){
-    $('#bar-chart-lib #bars').css("background-color", color);
+    $('#bc_id_'+ins+' #bars').css("background-color", color);
   }
 
   // Animate chart bars
   function animateBars(){
-    $('#bar-chart-lib .bar').each( function(index, bar){
+    $('#bc_id_'+ins+' .bar').each( function(index, bar){
       let height = $(this).height();
       $(this).height(0).animate({"height": height}, 900)
     });
