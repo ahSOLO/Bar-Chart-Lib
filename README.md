@@ -1,1 +1,1 @@
-# Bar-Chart-Project
+# Bar-Chart-Lib
