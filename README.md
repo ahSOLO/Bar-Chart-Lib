@@ -26,10 +26,13 @@ Bar-Chart-Lib contains the following features:
 - Built-in animations (option to disable).
 
 <h2> Installation </h2>
-1. Install or import the [jQuery library](https://jquery.com/) onto your webpage.
-2. Copy "barchartscript.js" and "barchartstyles.css" from this repository into a location accessible to your webpage.
-3. Link "barchartstyles.css" to your webpage by adding the following link in the `head` element of your HTML: <link rel="stylesheet" href=[PATH]>, replacing [PATH] with the path to the barchartystyles.css file.
-4. Link "barchartscript.js" to your webpage by adding the following script **below** where you loaded the jQUery library: <script src =[PATH]></script>, replacing [PATH] with the path to the barchartscript.js file. 
+1.  Install or import the [jQuery library](https://jquery.com/) onto your webpage.
+
+2.  Copy "barchartscript.js" and "barchartstyles.css" from this repository into a location accessible to your webpage.
+
+3.  Link "barchartstyles.css" to your webpage by adding the following link in the `head` element of your HTML: <link rel="stylesheet" href=[PATH]>, replacing [PATH] with the path to the barchartystyles.css file.
+
+4.  Link "barchartscript.js" to your webpage by adding the following script **below** where you loaded the jQUery library: <script src =[PATH]></script>, replacing [PATH] with the path to the barchartscript.js file. 
 
 <h2> How to use the API </h2>
 
@@ -40,8 +43,10 @@ Each parameter is described below.
 
 <h3> The "data" parameter </h3>
 `data` takes a javascript object in one of the following formats:
-1. To create a regular bar chart, `data` should be passed a javascript object where the property denotes the x-axis label of each respective bar, and the property value is a javascript number representing the value to be assigned to each respective bar: i.e. `{property1: property_value1, property2: property_value2, ... etc}`.
-2. To create a stacked bar chart, `data` should be passed a javascript object containing further javascript objects: i.e. `{x_axis_label1: {property1: property_value1,  property2: property_value2}, {x_axis_label2: {property3: property_value3,  property4: property_value4}... etc}` The property of the container object will be used for the x-axis label of each stacked bar. The property and property value of the inner objects will be displayed on the stacked bar chart in the following format "property : property_value". It is possible for a stacked bar to only contain only a single property: i.e. `{x_axis_label1: {property1: property_value1}, ... }`.
+
+1.  To create a regular bar chart, `data` should be passed a javascript object where the property denotes the x-axis label of each respective bar, and the property value is a javascript number representing the value to be assigned to each respective bar: i.e. `{property1: property_value1, property2: property_value2, ... etc}`.
+
+2.  To create a stacked bar chart, `data` should be passed a javascript object containing further javascript objects: i.e. `{x_axis_label1: {property1: property_value1,  property2: property_value2}, {x_axis_label2: {property3: property_value3,  property4: property_value4}... etc}` The property of the container object will be used for the x-axis label of each stacked bar. The property and property value of the inner objects will be displayed on the stacked bar chart in the following format "property : property_value". It is possible for a stacked bar to only contain only a single property: i.e. `{x_axis_label1: {property1: property_value1}, ... }`.
 
 <h3> The "options" parameter </h3>
 
