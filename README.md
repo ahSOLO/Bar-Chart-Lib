@@ -35,6 +35,10 @@ Bar-Chart-Lib contains the following features:
 
 4.  Link "barchartscript.js" to your webpage by adding the following script **below** where you loaded the jQUery library: <script src =[PATH]></script>, replacing [PATH] with the path to the barchartscript.js file. 
 
+![Example of Demo Code](demo/code-to-delete.jpg)
+
+5.  "barchartscript.js" contains three demo charts. To remove them, navigate to the top of "barchartscript.js" and delete the three function calls of `drawBarChart()` underneath the `// Demo` comment. Alternatively, you may modify these values to see what is possible with this library.
+
 <h2> How to use the API </h2>
 
 Bar-Chart-Lib uses the following function signature: 
@@ -77,7 +81,7 @@ Each parameter is described below.
 - animateBars: The default animations can be turned off by passing `animateBars:"off"` as an option.
 
 <h3> The "element" parameter </h3>
-This parameter takes a jQuery element designating where in the web page the bar chart should be rendered to.
+This parameter takes a jQuery element designating where in the web page the bar chart should be rendered to. The bar chart will be appended to the end of the designated element.
 
 <h2> Known Issues / Bugs </h2>
 
