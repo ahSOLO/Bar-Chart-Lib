@@ -24,6 +24,7 @@ drawBarChart({"United States":{"Apple": 1971, "Amazon": 1592, "Microsoft": 1546,
   yAxis: "Market Capitalization ($ Billion)", xAxis: "Country", title:"Top 10 Largest Companies in the World by Country", titleFont: "Sans", titleFontSize: "25px"},
   $("body"));
 
+$("body").append("<br><br><br>")
 
 // Main bar chart creation function
 function drawBarChart(data, options, element){ // TO DO: Make options an optional variable
