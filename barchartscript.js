@@ -9,14 +9,10 @@ drawBarChart({"React": 71.7, "Vue.js": 40.5, "Angular": 21.9, "Preact": 9.5, "Sv
   yAxis: "% of Developers Currently Using", title:"Most Popular Front-End Frameworks"},
   $("body"));
 
-$("body").append("<br>")
-
 drawBarChart({"Apple": 1971, "Saudi Aramco": 1956, "Amazon": 1592, "Microsoft": 1546, "Alphabet": 1116, "Alibaba": 863, "Facebook": 795, "Tencent": 724, "Berkshire Hathaway": 496, "Taiwan Semiconductor": 405},
   {valuePosition: "middle", barColors: pal3, labelColor: "#FFFFFF", chartHeight: 400, barWidth: "80%", yAxis: "Market Capitalization ($ Billion)",
   xAxis: "Company", title:"Top 10 Largest Companies in the World", titleFontSize: "30px", titleColor: "#007DE0"},
   $("body"));
-
-$("body").append("<br><br><br>")
 
 drawBarChart({"United States":{"Apple": 1971, "Amazon": 1592, "Microsoft": 1546, "Alphabet": 1116, "Facebook": 795, "Berkshire Hathaway": 496}, "Saudi Arabia":{"Saudi Aramco": 1956}, "China":{"Alibaba": 863, "Tencent": 724}, "Taiwan":{"Taiwan Semiconductor": 405}},
   {valuePosition: "middle", barColors: ["#002868", "#BF0A30", "#002868", "#BF0A30", "#002868", "#BF0A30", "#006C35", "#df1B12", "#9b870c", "#000097"],
@@ -24,10 +20,9 @@ drawBarChart({"United States":{"Apple": 1971, "Amazon": 1592, "Microsoft": 1546,
   yAxis: "Market Capitalization ($ Billion)", xAxis: "Country", title:"Top 10 Largest Companies in the World by Country", titleFont: "Sans", titleFontSize: "25px"},
   $("body"));
 
-$("body").append("<br><br><br>")
 
 // Main bar chart creation function
-function drawBarChart(data, options, element){ // TO DO: Make options an optional variable
+function drawBarChart(data, options, element){
 
   // Instance tracker (if multiple charts are on the same page)
   let instance = 0;
@@ -85,7 +80,8 @@ function drawBarChart(data, options, element){ // TO DO: Make options an optiona
   if (options.valuePosition) valuePosition = options.valuePosition;
 
   // Assign Width + Height Variables
-  let defaultWidth = $(window).width()-150;
+  let defaultWidth = $(window).width()-175;
+  let minWidth = length * 90;
   if (options.defaultWidth) defaultWidth = options.defaultWidth;
   let chartWidth = defaultWidth;
   let chartHeight = 300;
@@ -123,7 +119,7 @@ function drawBarChart(data, options, element){ // TO DO: Make options an optiona
       +axis3+'</span></li><li><span>'
       +axis4+'</span></li><li><span>'
       +axis5+'</span></li></ul><ul id="bars"></ul><span id="x-axis-label">'
-      +xAxisLabel+'</span></div></div>');
+      +xAxisLabel+'</span></div></div><br>');
     // set space between ticks
     $('#bc_id_'+ins+' #axis-ticks li').height(chartHeight/5 - 1);
     // Center y-axis label
@@ -214,8 +210,9 @@ function drawBarChart(data, options, element){ // TO DO: Make options an optiona
 
   // Adjust width and margins of bars on window resize
   function autoWidth(){
+    // Determine minimum width according to number of x axis labels
     $(window).resize(function() {
-      chartWidth = Math.max(300, Math.min($(window).width()-150, defaultWidth)); // Clamp the value of chartwidth to between 300 and window width - 100
+      chartWidth = Math.max(minWidth, Math.min($(window).width()-175), defaultWidth); // Clamp the value of chartwidth to between 300 and window width - 100
       BarsTotalWidth = chartWidth-axisTicksWidth;
       setWidth();
       setBarSpacing(barWidth);
