@@ -32,9 +32,12 @@ Bar-Chart-Lib uses the following function signature:
 
 Each parameter is described below.
 
+<h3> The "data" parameter </h3>
 ```data``` takes a javascript object in one of the following formats:
 1) To create a regular bar chart, ```data``` should be passed a javascript object where the property denotes the x-axis label of each respective bar, and the property value is a javascript number representing the value to be assigned to each respective bar: i.e. ```{property1: property_value1, property2: property_value2, ... etc}```
 2) To create a stacked bar chart, ```data``` should be passed a javascript object containing further javascript objects: i.e. ```{x_axis_label1: {property1: property_value1,  property2: property_value2}, {x_axis_label2: {property3: property_value3,  property4: property_value4}... etc}``` The property of the container object will be used for the x-axis label of each stacked bar. The property and property value of the inner objects will be displayed on the stacked bar chart in the following format "property : property_value". It is possible for a stacked bar to only contain only a single property: i.e. ```{x_axis_label1: {property1: property_value1}, ... }.
+
+<h3> The "options" parameter </h3>
 
 ```options``` consists of the customizable features included in Bar-Chart-Lib. Each is described below. ```options``` should be passed a javascript object where each property represents a specific option: ```{Option1: value1, Option2: value2... etc}```. To use Bar-Chart-Lib without specifying any options, pass an empty object ```{}``` to this parameter instead.
 
@@ -60,6 +63,9 @@ Each parameter is described below.
 - setBackgroundColor: The color of the chart background (string).
 - setLabelColor: The color of all text within the chart, with the exception of the title.
 - animateBars: The default animations can be turned off by passing animateBars:"off" as an option.
+
+<h3> The "element" parameter </h3>
+This parameter takes a jQuery element designating where in the web page the bar chart should be rendered to.
 
 <h2> Known Issues / Bugs </h2>
 
