@@ -210,7 +210,6 @@ function drawBarChart(data, options, element){
 
   // Adjust width and margins of bars on window resize
   function autoWidth(){
-    // Determine minimum width according to number of x axis labels
     $(window).resize(function() {
       chartWidth = Math.max(minWidth, $(window).width()-175); // Clamp the value of chartwidth to between 300 and window width - 100
       BarsTotalWidth = chartWidth-axisTicksWidth;
