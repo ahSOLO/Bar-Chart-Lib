@@ -22,7 +22,7 @@ Bar-Chart-Lib contains the following features:
 - Bar thickness and the spaces between bars can be adjusted.
 - Custom labels can be written on each axis (X, Y).
 - Fully customizable title, with choice of font, font size, and color.
-- Multiple (stacked value bars): Show a collection of values stacked on top of each other in each bar.
+- Multiple (stacked value) bars: Show a collection of values stacked on top of each other in each bar.
 - Built-in animations (option to disable).
 
 <h2> Installation </h2>
